@@ -1,4 +1,4 @@
-# Chat with your Codebase using LangChain and OpenAI's GPT-4 
+# Chat with your Codebase
 This read me is generated using LangChain and OpenAI's GPT-4 model.
 
 ```bash

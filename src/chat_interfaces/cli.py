@@ -2,6 +2,7 @@ import click
 from langchain_openai import OpenAIEmbeddings
 from ..chat_helper.openai_chat import ChatHelper
 
+
 @click.command()
 @click.option('--path', prompt='Enter the path to your documents', help='The path to your documents.')
 @click.option('--model', prompt='Enter the model you want to use', default='gpt-4', help='The model to use for QA.')

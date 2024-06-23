@@ -8,7 +8,10 @@ Enter the programming language of your documents [go]: python
 Enter your question (or type 'exit' to quit): write a readme for this repo
 
 ```
-
+## Streamlit UI
+```bash
+streamlit run main.py
+```
 ![Chat UI](scripts/chat_ui.png)
 
 LangChain is a powerful tool that uses advanced language models to process, analyze, and generate insights from your documents. It combines the power of the OpenAI's GPT-4 model for natural language processing, making it possible to embed and analyze your documents in a more meaningful way.

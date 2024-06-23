@@ -1,0 +1,13 @@
+langchain_community
+langchain_text_splitters
+langchain_chroma
+langchain_openai
+langchain_core
+langchain
+click
+streamlit
+numpy<2,>=1.20.0
+esprima
+tree-sitter 
+tree-sitter-languages
+pytest

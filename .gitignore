@@ -1,0 +1,26 @@
+nvidia-server-repo/
+**/.idea/
+**/.vscode/
+# Ignore dist/ in any directory
+**/dist/
+
+# Ignore build/ in any directory
+**/build/
+
+# Ignore *.egg-info/ in any directory
+**/*.egg-info/
+
+# Ignore __pycache__/ in any directory
+**/__pycache__/
+
+# Ignore *.pyc files in any directory
+**/*.pyc
+
+# Ignore *.pyo files in any directory
+**/*.pyo
+
+# Ignore .venv/ in any directory
+**/.venv/
+
+# Ignore .checlpoints/ in any directory
+**/.ipynb_checkpoints/

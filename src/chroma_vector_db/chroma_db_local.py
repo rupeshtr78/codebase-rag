@@ -1,6 +1,3 @@
-# @TODO : Add the code to start the chroma db and add the documents to the chroma db
-import os
-import subprocess
 import sys
 from typing import TYPE_CHECKING, Any, Coroutine
 import chromadb

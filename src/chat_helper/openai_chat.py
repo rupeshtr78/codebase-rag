@@ -1,3 +1,5 @@
+from typing import Any
+
 from langchain_openai import OpenAIEmbeddings
 from ..document_loaders.generic_loader import CodeBaseLoader
 from ..document_splitters.recursive_character_text_splitter import LanguageTextSplitter
@@ -14,7 +16,7 @@ class OpenAiChatHelper:
         self.retriever = ChromaStoreRetriever(openAiEmbeddings)
         self.prompt = CodePromptTemplate(model)
 
-    def chat(self, question: str) -> str:
+    def chat(self, question: str) -> Any | None:
         documents = self.loader.code_loader()
         if not documents:
             logger.error("No documents found.")
@@ -25,9 +27,14 @@ class OpenAiChatHelper:
         if not retriever:
             logger.error("No retriever found.")
         qa = self.prompt.openai_prompt_template(retriever) if retriever else None
-        if not qa:
-            logger.error("No QA found.")
-        result = qa.invoke({"input": question}) if qa else None
-        if not result:
-            logger.error("No result found.")
-        return result["answer"]
+
+        if qa:
+            result = qa.invoke({"input": question})
+            if result and "answer" in result:
+                return result["answer"]
+            else:
+                logger.error("No result found or 'answer' key missing in result.")
+                return None
+        else:
+            logger.error("'qa' object is None.")
+            return None

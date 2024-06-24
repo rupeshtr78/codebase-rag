@@ -6,8 +6,8 @@ from langchain.vectorstores import Chroma
 from chromadb.api import AsyncClientAPI
 from chromadb.api.models.AsyncCollection import AsyncCollection
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from chroma_utils import documents_splitter
 from langchain_core.vectorstores import VectorStoreRetriever
+from langchain_core.documents import Document
 from .. import logger
 
 
@@ -21,7 +21,6 @@ class ChromaLocal:
 
     # Initialize Chroma client with the local host URL
     def get_chroma_async_client(self) -> Coroutine[Any, Any, AsyncClientAPI]:
-        client = None
         try:
             client = chromadb.AsyncHttpClient(
                 host=self.host,
@@ -35,18 +34,6 @@ class ChromaLocal:
             sys.exit(0)
         return client
 
-    def create_chroma_collection(self, client: AsyncClientAPI) -> Coroutine[Any, Any, AsyncCollection]:
-        try:
-            collection = client.get_or_create_collection(
-                name=self.collection_name,
-            )
-            return collection
-        except ValueError:
-            sys.exit(0)
-
-    # Define embedding function
-    # embedding_function = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
-    # model_name = "sentence-transformers/all-mpnet-base-v2"
     def get_embedding_function(self) -> HuggingFaceEmbeddings:
         try:
             model = self.embedding_model
@@ -67,9 +54,9 @@ class ChromaLocal:
             # Handle the exception appropriately or re-raise it
             raise
 
-    def initialize_chromadb(self):
+    def get_chromadb(self):
         try:
-            # Initialize Langchain Chroma
+            # Initialize Langchain Chroma instance
             langchain_chroma = Chroma(
                 client=self.get_chroma_async_client(),
                 collection_name=self.collection_name,
@@ -81,22 +68,29 @@ class ChromaLocal:
             # Handle the exception appropriately or re-raise it
             raise
 
-    def add_documents_to_vectordb(self, dir_path: str) -> None:
-        split_docs = documents_splitter(dir_path)
+    def create_chroma_collection(self, client: AsyncClientAPI) -> Coroutine[Any, Any, AsyncCollection]:
+        try:
+            collection = client.get_or_create_collection(
+                name=self.collection_name,
+            )
+            return collection
+        except ValueError:
+            sys.exit(0)
+
+    def add_documents_to_local_vectordb(self, split_docs: list[Document]) -> None:
         if not split_docs:
             logger.error(f"No documents found to split")
             return
         try:
-            langchain_chroma = self.initialize_chromadb()
+            langchain_chroma = self.get_chromadb()
             langchain_chroma.add_documents(split_docs)
         except Exception as e:
             logger.error(f"An error occurred while adding documents to ChromaDB: {e}")
             # Handle the exception appropriately or re-raise it
             raise
 
-    def retrieve_from_local_vectordb(self) -> VectorStoreRetriever:
+    def retrieve_from_local_vectordb(self, db: Chroma) -> VectorStoreRetriever:
         try:
-            db = self.initialize_chromadb()
             retriever = db.as_retriever(
                 search_type="mmr",  # "similarity_score_threshold", "mmr", "knn"
                 # search_kwargs={"k": 8},

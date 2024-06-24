@@ -1,3 +1,7 @@
 text-embedding-3-large
 text-similarity-davinci-001 ( deprecated )
 text-embedding-3-small
+
+    # Define embedding function
+    # embedding_function = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+    # model_name = "sentence-transformers/all-mpnet-base-v2"

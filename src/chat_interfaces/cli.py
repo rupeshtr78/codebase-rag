@@ -1,6 +1,6 @@
 import click
 from langchain_openai import OpenAIEmbeddings
-from ..chat_helper.openai_chat import ChatHelper
+from ..chat_helper.openai_chat import OpenAiChatHelper
 
 
 @click.command()
@@ -10,7 +10,7 @@ from ..chat_helper.openai_chat import ChatHelper
               help='The programming language of the documents.')
 def chat_cli(path, model, language):
     openAiEmbeddings = OpenAIEmbeddings(model="text-embedding-3-small", disallowed_special=())
-    helper = ChatHelper(path, language, openAiEmbeddings, model)
+    helper = OpenAiChatHelper(path, language, openAiEmbeddings, model)
     while True:
         question = input("Enter your question (or type 'exit' to quit): ")
         if question.lower() == 'exit':

@@ -2,17 +2,22 @@ from langchain_openai import OpenAIEmbeddings
 from ..document_loaders.generic_loader import CodeBaseLoader
 from ..document_splitters.recursive_character_text_splitter import LanguageTextSplitter
 from ..chroma_vector_db.vector_store_retriever import ChromaStoreRetriever
+from ..chroma_vector_db.chroma_db_local import ChromaLocal
 from ..chat_prompts.chat_prompt_template import CodePromptTemplate
 
 from .. import logger
 
-
-class OpenAiChatHelper:
-    def __init__(self, path, language, openAiEmbeddings: OpenAIEmbeddings, model: str):
+# self.host = host
+# self.port = port
+# self.collection_name = collection_name
+# self.database = "chromadb_local"
+# self.embedding_model = embedding_model
+class LocalAiChatHelper:
+    def __init__(self, path, language, openAiEmbeddings: OpenAIEmbeddings, ai_model: str):
         self.loader = CodeBaseLoader(path, language)
         self.splitter = LanguageTextSplitter(language)
-        self.retriever = ChromaStoreRetriever(openAiEmbeddings)
-        self.prompt = CodePromptTemplate(model)
+        self.retriever = ChromaLocal(host="0.0.0.0", port=8080, collection_name="chromadb_local", embedding_model="sentence-transformers/all-mpnet-base-v2")
+        self.prompt = CodePromptTemplate(ai_model)
 
     def chat(self, question: str) -> str:
         documents = self.loader.code_loader()
@@ -21,7 +26,8 @@ class OpenAiChatHelper:
         chunks = self.splitter.document_chunks(documents) if documents else None
         if not chunks:
             logger.error("No chunks found.")
-        retriever = self.retriever.get_retriever(chunks) if chunks else None
+        db = self.retriever.get_chromadb() if chunks else None
+        retriever = self.retriever.retrieve_from_local_vectordb(db) if chunks else None
         if not retriever:
             logger.error("No retriever found.")
         qa = self.prompt.openai_prompt_template(retriever) if retriever else None

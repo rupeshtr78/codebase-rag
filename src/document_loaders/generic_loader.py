@@ -22,7 +22,7 @@ class CodeBaseLoader:
         if language not in ["go", "python", "javascript", "typescript", "java", "c", "cpp", "rust", "ruby", "php"]:
             raise ValueError(f"Unsupported language: {language}")
 
-    def doc_loader(self) -> List[Document]:
+    def code_loader(self) -> List[Document]:
         if not os_path.exists(self.path):
             logger.error(f"Path {self.path} does not exist.")
             return []

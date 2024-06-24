@@ -1,6 +1,6 @@
 import streamlit as st
 from langchain_openai import OpenAIEmbeddings
-from ..chat_helper.openai_chat import ChatHelper as LangChainHelper
+from ..chat_helper.openai_chat import OpenAiChatHelper as LangChainHelper
 
 
 def chat_ui():

@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING, List
 from langchain_community.document_loaders.generic import Document
 from .. import logger
 
+
 class LanguageTextSplitter:
     def __init__(self, language: str):
         self.language = language

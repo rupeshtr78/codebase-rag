@@ -18,6 +18,7 @@ class ChromaLocal:
         self.collection_name = collection_name
         self.database = "chromadb_local"
         self.embedding_model = embedding_model
+        self.client = self.get_chroma_async_client()
 
     # Initialize Chroma client with the local host URL
     def get_chroma_async_client(self) -> Coroutine[Any, Any, AsyncClientAPI]:

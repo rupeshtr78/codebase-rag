@@ -18,9 +18,9 @@ class ChromaStoreRetriever:
             return VectorStoreRetriever().error_message("Failed to create Chroma vector store")
 
         retriever = db.as_retriever(
-            search_type="mmr",
+            search_type="mmr", # "similarity_score_threshold", "mmr", "knn"
             # search_kwargs={"k": 8},
-            search_kwargs={'k': 6, 'lambda_mult': 0.25}  # Useful if your dataset has many similar documents
+            search_kwargs={'k': 6, 'lambda_mult': 0.25},  # Useful if your dataset has many similar documents
         )
 
         if not retriever:

@@ -9,6 +9,8 @@ from langchain.vectorstores import Chroma
 from chromadb.api import AsyncClientAPI
 from chromadb.api.models.AsyncCollection import AsyncCollection
 from langchain_community.embeddings import HuggingFaceEmbeddings
+from chroma_utils import documents_splitter
+from langchain_core.vectorstores import VectorStoreRetriever
 from .. import logger
 
 
@@ -51,12 +53,16 @@ class ChromaLocal:
     def get_embedding_function(self) -> HuggingFaceEmbeddings:
         try:
             model = self.embedding_model
-            model_kwargs = {'device': 'cpu'}
-            encode_kwargs = {'normalize_embeddings': False}
+            model_kwargs = {
+                'device': 'cpu',
+                'trust_remote_code': True
+            }
+            encode_kwargs = {'normalize_embeddings': True}
             hf = HuggingFaceEmbeddings(
                 model_name=model,
                 model_kwargs=model_kwargs,
-                encode_kwargs=encode_kwargs
+                encode_kwargs=encode_kwargs,
+                search_kwargs={'k': 5},
             )
             return hf
         except Exception as e:
@@ -88,5 +94,19 @@ class ChromaLocal:
             langchain_chroma.add_documents(split_docs)
         except Exception as e:
             logger.error(f"An error occurred while adding documents to ChromaDB: {e}")
+            # Handle the exception appropriately or re-raise it
+            raise
+
+    def retrieve_from_local_vectordb(self) -> VectorStoreRetriever:
+        try:
+            db = self.initialize_chromadb()
+            retriever = db.as_retriever(
+                search_type="mmr",  # "similarity_score_threshold", "mmr", "knn"
+                # search_kwargs={"k": 8},
+                search_kwargs={'k': 6, 'lambda_mult': 0.25},  # Useful if your dataset has many similar documents
+            )
+            return retriever
+        except Exception as e:
+            logger.error(f"An error occurred while retrieving documents from ChromaDB: {e}")
             # Handle the exception appropriately or re-raise it
             raise

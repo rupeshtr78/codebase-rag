@@ -26,7 +26,10 @@ class LocalAiChatHelper:
             logger.error("No chunks found.")
 
         db = self.retriever.get_chromadb() if chunks else None
-        retriever = self.retriever.retrieve_from_local_vectordb(db) if chunks else None
+        if not db:
+            logger.error("No db found.")
+
+        retriever = self.retriever.retrieve_from_local_vectordb(db) if db else None
         if not retriever:
             logger.error("No retriever found.")
 

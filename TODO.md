@@ -2,3 +2,4 @@
 
 - [ ] Local Chroma
 - [ ] Ollama Model
+- [ ] add pdf

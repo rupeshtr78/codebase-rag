@@ -29,14 +29,15 @@ class CodeBaseLoader:
         loader = GenericLoader.from_filesystem(
             self.path,
             glob="**/*",
-            suffixes=[".js", ".ts", ".go", ".py", ".java", ".c", ".cpp", ".h", ".hpp", ".rs", ".rb", ".php", ".html", ],
+            # suffixes=[".js", ".ts", ".go", ".py", ".java", ".c", ".cpp", ".h", ".hpp", ".rs", ".rb", ".php", ".html", ],
+            suffixes=[".js", ".ts", ".go", ".py", ".java", ".c", ".cpp", ".rs", ".rb", ".php", ".html", ".md", ".tex", ".sol", ".cs", ".cobol", ".lua", ".pl", ".ex", ".exs"],
             exclude=["Dockerfile", "vendor", "docker-compose.yml", "Makefile", "README.md", "build", "dist",
                      "node_modules", "target", "out", ".git", ".idea", ".vscode", ".venv", ".pytest_cache", ".tox",
                      ".mypy_cache", ".cache", ".eggs", ".ipynb_checkpoints", ".gitignore", ".dockerignore",
                      ".gitattributes", ".editorconfig", ".pre-commit-config.yaml", ".flake8", ".pylintrc",
                      ".gitlab-ci.yml", ".travis.yml", ".github", ".gitignore", ".gitattributes", ".editorconfig",
                      ".pre-commit-config.yaml", ".flake8", ".pylintrc", ".gitlab-ci.yml", ".travis.yml", ".github"],
-            parser=LanguageParser(language=self.language, parser_threshold=500),
+            parser=LanguageParser(language=self.language, parser_threshold=100),
         )
 
         if not loader:

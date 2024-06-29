@@ -9,8 +9,8 @@ def chat_ui():
 
     path = st.text_input("Enter the path to your documents:", value="")
     model = st.text_input("Enter the model you want to use:", value="gpt-4")
-    language = st.text_input("Enter the programming language of your documents:", value="go")
-    openAiEmbeddings = OpenAIEmbeddings(model="text-embedding-3-small", disallowed_special=())
+    language = st.text_input("Enter the programming language of your documents:", value="java")
+    openAiEmbeddings = OpenAIEmbeddings(model="text-embedding-3-large", disallowed_special=())
 
     if 'helper' not in st.session_state or path != st.session_state.get('path', '') or model != st.session_state.get(
             'model', '') or language != st.session_state.get('language', ''):

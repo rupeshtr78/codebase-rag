@@ -15,6 +15,10 @@ class OpenAiChatHelper:
         self.splitter = LanguageTextSplitter(language)
         self.retriever = ChromaStoreRetriever(openAiEmbeddings)
         self.prompt = CodePromptTemplate(model)
+        self.language = language
+        self.path = path
+        self.openAiEmbeddings = openAiEmbeddings
+        self.model = model
 
     def chat(self, question: str) -> Any | None:
         documents = self.loader.code_loader()

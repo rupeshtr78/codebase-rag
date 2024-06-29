@@ -24,3 +24,5 @@ nvidia-server-repo/
 
 # Ignore .checlpoints/ in any directory
 **/.ipynb_checkpoints/
+
+**/venv/

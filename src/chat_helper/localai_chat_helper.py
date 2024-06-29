@@ -11,11 +11,11 @@ from .. import logger
 
 
 class LocalAiChatHelper:
-    def __init__(self, path, language, openAiEmbeddings: OpenAIEmbeddings, ai_model: str):
+    def __init__(self, path, language, embedding_model: str, ai_model: str):
         self.loader = CodeBaseLoader(path, language)
         self.splitter = LanguageTextSplitter(language)
         self.chroma_local = ChromaLocal(host="0.0.0.0", port=8070, collection_name="chromadb_local",
-                                     embedding_model="sentence-transformers/all-mpnet-base-v2")
+                                     embedding_model=embedding_model) # "sentence-transformers/all-mpnet-base-v2"
         self.prompt = CodePromptTemplate(ai_model)
 
     def chat(self, question: str) -> Any | None:

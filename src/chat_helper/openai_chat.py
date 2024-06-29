@@ -10,10 +10,10 @@ from .. import logger
 
 
 class OpenAiChatHelper:
-    def __init__(self, path, language, openAiEmbeddings: OpenAIEmbeddings, model: str):
+    def __init__(self, path, language, embedding_model: OpenAIEmbeddings, model: str):
         self.loader = CodeBaseLoader(path, language)
         self.splitter = LanguageTextSplitter(language)
-        self.retriever = ChromaStoreRetriever(openAiEmbeddings)
+        self.retriever = ChromaStoreRetriever(embedding_model)
         self.prompt = CodePromptTemplate(model)
 
     def chat(self, question: str) -> Any | None:

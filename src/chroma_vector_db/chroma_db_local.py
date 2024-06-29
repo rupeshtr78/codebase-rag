@@ -83,8 +83,8 @@ class ChromaLocal:
             logger.error(f"No documents found to split")
             return
         try:
-            langchain_chroma = self.get_chromadb()
-            langchain_chroma.add_documents(split_docs)
+            langchain_chroma: Chroma = self.get_chromadb()
+            langchain_chroma.aadd_documents(split_docs)
         except Exception as e:
             logger.error(f"An error occurred while adding documents to ChromaDB: {e}")
             # Handle the exception appropriately or re-raise it

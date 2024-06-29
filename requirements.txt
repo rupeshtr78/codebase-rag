@@ -12,8 +12,7 @@ tree-sitter
 tree-sitter-languages
 pytest~=8.2.2
 chromadb~=0.5.3
-setuptools~=59.6.0
+setuptools
 pysqlite3-binary
 faiss-cpu
-faiss-gpu
 pypdf
